@@ -3,6 +3,7 @@ package com.fleetflow.service;
 import com.fleetflow.dto.user.ForgotPasswordRequest;
 import com.fleetflow.dto.user.ForgotPasswordResponse;
 import com.fleetflow.dto.user.LoginRequest;
+import com.fleetflow.dto.user.MeResponse;
 import com.fleetflow.dto.user.RegisterUserRequest;
 import com.fleetflow.dto.user.ResetPasswordRequest;
 import com.fleetflow.dto.user.UserResponse;
@@ -23,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,29 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
 
     private static final int TOKEN_VALIDITY_HOURS = 1;
+
+    @Override
+    @Transactional(readOnly = true)
+    public MeResponse getMe(String email) {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
+        List<String> permissions = user.getRoles().stream()
+                .flatMap(r -> r.getPermissions().stream())
+                .map(p -> p.getName())
+                .distinct()
+                .collect(Collectors.toList());
+        String roleName = user.getRoles().stream()
+                .findFirst()
+                .map(r -> r.getName().name())
+                .orElse(null);
+        return MeResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(roleName)
+                .permissions(permissions)
+                .build();
+    }
 
     @Override
     public UserResponse register(RegisterUserRequest request) {

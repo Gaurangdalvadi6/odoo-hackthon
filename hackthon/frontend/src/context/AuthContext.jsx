@@ -7,12 +7,30 @@ const TOKEN_KEY = 'fleetflow_token';
 export function AuthProvider({ children }) {
   const [token, setTokenState] = useState(() => localStorage.getItem(TOKEN_KEY));
   const [user, setUser] = useState(null);
+  const [permissions, setPermissions] = useState([]);
 
   const setToken = (t) => {
     if (t) localStorage.setItem(TOKEN_KEY, t);
     else localStorage.removeItem(TOKEN_KEY);
     setTokenState(t);
   };
+
+  const fetchMe = async () => {
+    if (!token) return;
+    try {
+      const { auth } = await import('../api/client');
+      const me = await auth.me();
+      setUser(me);
+      setPermissions(me?.permissions ?? []);
+    } catch (_) {
+      setUser(null);
+      setPermissions([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchMe();
+  }, [token]);
 
   const logout = async () => {
     try {
@@ -21,6 +39,7 @@ export function AuthProvider({ children }) {
     } catch (_) {}
     setToken(null);
     setUser(null);
+    setPermissions([]);
   };
 
   const value = {
@@ -28,6 +47,8 @@ export function AuthProvider({ children }) {
     setToken,
     user,
     setUser,
+    permissions,
+    fetchMe,
     logout,
     isAuthenticated: !!token,
   };

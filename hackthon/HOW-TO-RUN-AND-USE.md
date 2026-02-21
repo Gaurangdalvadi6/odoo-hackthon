@@ -56,7 +56,7 @@ npm run dev
 
 ## 4. First-time setup: register a user
 
-On **first backend run**, roles and permissions are **seeded automatically** (ROLE_MANAGER, ROLE_DISPATCHER, ROLE_ANALYST, ROLE_SAFETY with all permissions). You can register right away.
+On **first backend run**, roles and permissions are **seeded automatically**. Each role has different permissions (see **Role access** below). You can register right away.
 
 **Register via Postman or curl** (backend must be running):
 
@@ -71,6 +71,19 @@ curl -X POST http://localhost:8080/api/auth/register \
 Then open **http://localhost:5173** and log in with that email and password.
 
 **Or register from the UI:** Open http://localhost:5173 → click **Register** on the login page → fill Name, Email, Password, choose Role (e.g. Manager) → **Register**. You’ll be logged in automatically.
+
+---
+
+### Role access (Manager vs Dispatcher vs Analyst vs Safety)
+
+| Role | Purpose | What they can do |
+|------|--------|-------------------|
+| **Manager** | Oversee fleet, assets, scheduling | **Full access:** vehicles (add/edit/retire), drivers, trips, maintenance, fuel logs, dashboard, analytics, exports. |
+| **Dispatcher** | Create trips, assign drivers, validate cargo | **Trips:** create, dispatch, complete, cancel. **Read only:** vehicles, drivers. **Dashboard.** Cannot add/edit vehicles or drivers, no maintenance, no exports. |
+| **Analyst** | Audit fuel, ROI, operational costs | **Read only:** vehicles, drivers, trips, maintenance, fuel. **Dashboard, Analytics, Exports** (CSV/PDF, payroll, health audit). Cannot create or update anything. |
+| **Safety** | Driver compliance, license, safety scores | **Drivers:** read and **update** (status, safety score). **Read only:** vehicles, trips, maintenance, fuel. **Dashboard.** Cannot create vehicles/trips/maintenance or export. |
+
+If a user tries an action their role doesn’t allow, the API returns **403 Forbidden**.
 
 ---
 

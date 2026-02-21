@@ -41,6 +41,7 @@ export function apiBlob(path) {
 }
 
 export const auth = {
+  me: () => api('/auth/me'),
   login: (email, password) => api('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
   register: (body) => api('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
   logout: () => api('/auth/logout', { method: 'POST' }),

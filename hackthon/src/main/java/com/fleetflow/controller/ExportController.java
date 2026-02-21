@@ -20,7 +20,7 @@ public class ExportController {
 
     private final ExportService exportService;
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/vehicles/csv")
     public ResponseEntity<byte[]> exportVehiclesCsv() {
         ByteArrayInputStream stream = exportService.exportVehiclesCsv();
@@ -31,7 +31,7 @@ public class ExportController {
                 .body(bytes);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/trips/csv")
     public ResponseEntity<byte[]> exportTripsCsv() {
         ByteArrayInputStream stream = exportService.exportTripsCsv();
@@ -42,7 +42,7 @@ public class ExportController {
                 .body(bytes);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/drivers/csv")
     public ResponseEntity<byte[]> exportDriversCsv() {
         ByteArrayInputStream stream = exportService.exportDriversCsv();
@@ -53,25 +53,25 @@ public class ExportController {
                 .body(bytes);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/vehicles/pdf")
     public ResponseEntity<byte[]> exportVehiclesPdf() {
         return exportPdf(exportService.exportVehiclesPdf(), "vehicles.pdf");
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/trips/pdf")
     public ResponseEntity<byte[]> exportTripsPdf() {
         return exportPdf(exportService.exportTripsPdf(), "trips.pdf");
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/drivers/pdf")
     public ResponseEntity<byte[]> exportDriversPdf() {
         return exportPdf(exportService.exportDriversPdf(), "drivers.pdf");
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/payroll/csv")
     public ResponseEntity<byte[]> exportMonthlyPayrollCsv(
             @RequestParam int year,
@@ -84,7 +84,7 @@ public class ExportController {
                 .body(bytes);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/payroll/pdf")
     public ResponseEntity<byte[]> exportMonthlyPayrollPdf(
             @RequestParam int year,
@@ -92,7 +92,7 @@ public class ExportController {
         return exportPdf(exportService.exportMonthlyPayrollPdf(year, month), "payroll-" + year + "-" + month + ".pdf");
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/health-audit/csv")
     public ResponseEntity<byte[]> exportHealthAuditCsv() {
         ByteArrayInputStream stream = exportService.exportHealthAuditCsv();
@@ -103,7 +103,7 @@ public class ExportController {
                 .body(bytes);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('EXPORT')")
     @GetMapping("/health-audit/pdf")
     public ResponseEntity<byte[]> exportHealthAuditPdf() {
         return exportPdf(exportService.exportHealthAuditPdf(), "health-audit.pdf");

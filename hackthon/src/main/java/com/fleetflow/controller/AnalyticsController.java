@@ -19,7 +19,7 @@ public class AnalyticsController {
 
     private final AnalyticsService analyticsService;
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('ANALYTICS_READ')")
     @GetMapping("/vehicle/{id}/profit")
     public ResponseEntity<Double> getProfit(@PathVariable Long id){
         return ResponseEntity.ok(
@@ -27,7 +27,7 @@ public class AnalyticsController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('ANALYTICS_READ')")
     @GetMapping("/vehicle/{id}/cost-per-km")
     public ResponseEntity<Double> getCostPerKm(@PathVariable Long id){
         return ResponseEntity.ok(
@@ -35,7 +35,7 @@ public class AnalyticsController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('ANALYTICS_READ')")
     @GetMapping("/vehicle/{id}/fuel-efficiency")
     public ResponseEntity<Double> getFuelEfficiency(@PathVariable Long id){
         return ResponseEntity.ok(
@@ -43,7 +43,7 @@ public class AnalyticsController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('ANALYTICS_READ')")
     @GetMapping("/vehicle/{id}/roi")
     public ResponseEntity<VehicleROIResponse> getVehicleROI(@PathVariable Long id){
         return ResponseEntity.ok(
@@ -51,7 +51,7 @@ public class AnalyticsController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('ANALYTICS_READ')")
     @GetMapping("/vehicle/{id}/operational-cost")
     public ResponseEntity<VehicleOperationalCostResponse> getOperationalCost(@PathVariable Long id){
         return ResponseEntity.ok(
@@ -59,7 +59,7 @@ public class AnalyticsController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('ANALYTICS_READ')")
     @GetMapping("/driver/{id}/completion-rate")
     public ResponseEntity<DriverPerformanceResponse> getDriverCompletionRate(@PathVariable Long id){
         return ResponseEntity.ok(

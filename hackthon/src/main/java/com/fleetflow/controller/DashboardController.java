@@ -16,7 +16,7 @@ public class DashboardController {
 
     private final DashboardService dashboardService;
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('DASHBOARD_READ')")
     @GetMapping
     public ResponseEntity<DashboardResponse> getDashboard() {
         return ResponseEntity.ok(dashboardService.getDashboard());

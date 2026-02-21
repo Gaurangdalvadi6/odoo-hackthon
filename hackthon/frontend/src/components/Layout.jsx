@@ -4,17 +4,20 @@ import { useAuth } from '../context/AuthContext';
 import './Layout.css';
 
 const nav = [
-  { to: '/', label: 'Command Center' },
-  { to: '/vehicles', label: 'Vehicle Registry' },
-  { to: '/trips', label: 'Trip Dispatcher' },
-  { to: '/drivers', label: 'Drivers' },
-  { to: '/maintenance', label: 'Maintenance' },
-  { to: '/fuel-logs', label: 'Fuel Logs' },
-  { to: '/analytics', label: 'Analytics & Reports' },
+  { to: '/', label: 'Command Center', permission: 'DASHBOARD_READ' },
+  { to: '/vehicles', label: 'Vehicle Registry', permission: 'VEHICLE_READ' },
+  { to: '/trips', label: 'Trip Dispatcher', permission: 'TRIP_READ' },
+  { to: '/drivers', label: 'Drivers', permission: 'DRIVER_READ' },
+  { to: '/maintenance', label: 'Maintenance', permission: 'MAINTENANCE_READ' },
+  { to: '/fuel-logs', label: 'Fuel Logs', permission: 'FUEL_READ' },
+  { to: '/analytics', label: 'Analytics & Reports', permission: 'ANALYTICS_READ' },
 ];
 
 export function Layout({ children }) {
-  const { logout } = useAuth();
+  const { logout, permissions } = useAuth();
+  const visibleNav = permissions.length
+    ? nav.filter((item) => permissions.includes(item.permission))
+    : nav;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -29,7 +32,7 @@ export function Layout({ children }) {
           <span className="sidebar-logo">FleetFlow</span>
         </div>
         <nav className="sidebar-nav">
-          {nav.map(({ to, label }) => (
+          {visibleNav.map(({ to, label }) => (
             <NavLink key={to} to={to} className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}>
               {label}
             </NavLink>

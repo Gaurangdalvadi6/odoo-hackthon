@@ -3,6 +3,7 @@ package com.fleetflow.controller;
 import com.fleetflow.dto.user.ForgotPasswordRequest;
 import com.fleetflow.dto.user.ForgotPasswordResponse;
 import com.fleetflow.dto.user.LoginRequest;
+import com.fleetflow.dto.user.MeResponse;
 import com.fleetflow.dto.user.RegisterUserRequest;
 import com.fleetflow.dto.user.ResetPasswordRequest;
 import com.fleetflow.dto.user.UserResponse;
@@ -11,6 +12,8 @@ import com.fleetflow.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +23,12 @@ public class AuthController {
 
     private final AuthService authService;
     private final TokenBlacklistService blacklistService;
+
+    @GetMapping("/me")
+    public ResponseEntity<MeResponse> getMe(@AuthenticationPrincipal UserDetails user) {
+        if (user == null) return ResponseEntity.status(401).build();
+        return ResponseEntity.ok(authService.getMe(user.getUsername()));
+    }
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(
