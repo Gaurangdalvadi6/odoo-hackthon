@@ -7,6 +7,7 @@ import com.fleetflow.entity.Role;
 import com.fleetflow.entity.User;
 import com.fleetflow.repository.RoleRepository;
 import com.fleetflow.repository.UserRepository;
+import com.fleetflow.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
