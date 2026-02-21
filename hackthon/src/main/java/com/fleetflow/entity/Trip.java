@@ -32,6 +32,11 @@ public class Trip {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
+    private Double startOdometer;
+    private Double endOdometer;
+
+    private Double distance;
+
     @Enumerated(EnumType.STRING)
     private TripStatus status;
     // DRAFT, DISPATCHED, COMPLETED, CANCELLED

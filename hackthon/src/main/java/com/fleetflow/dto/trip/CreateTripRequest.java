@@ -19,5 +19,10 @@ public class CreateTripRequest {
     @Positive
     private Double cargoWeight;
 
+    @NotNull
+    @Positive
+    private Double startOdometer;
+    private Double endOdometer;
+
     private Double revenue;
 }

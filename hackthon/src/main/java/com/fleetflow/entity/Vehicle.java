@@ -37,6 +37,8 @@ public class Vehicle {
 
     private Double acquisitionCost;
 
+    private Double totalFuelCost;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 }
