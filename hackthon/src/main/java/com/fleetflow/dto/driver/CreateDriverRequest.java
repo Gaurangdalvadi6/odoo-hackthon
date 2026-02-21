@@ -1,5 +1,6 @@
 package com.fleetflow.dto.driver;
 
+import com.fleetflow.enums.VehicleType;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -19,4 +20,6 @@ public class CreateDriverRequest {
 
     @Future
     private LocalDate licenseExpiry;
+
+    private VehicleType licenseCategory;
 }

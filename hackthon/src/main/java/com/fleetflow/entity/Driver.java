@@ -1,6 +1,7 @@
 package com.fleetflow.entity;
 
 import com.fleetflow.enums.DriverStatus;
+import com.fleetflow.enums.VehicleType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,9 @@ public class Driver {
     private String licenseNumber;
 
     private LocalDate licenseExpiry;
+
+    @Enumerated(EnumType.STRING)
+    private VehicleType licenseCategory;
 
     @Enumerated(EnumType.STRING)
     private DriverStatus status;

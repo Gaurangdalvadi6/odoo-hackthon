@@ -16,6 +16,10 @@ public class TripResponse {
     private String vehiclePlate;
     private String driverName;
     private Double cargoWeight;
+    private String origin;
+    private String destination;
     private TripStatus status;
     private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private Double distance;
 }

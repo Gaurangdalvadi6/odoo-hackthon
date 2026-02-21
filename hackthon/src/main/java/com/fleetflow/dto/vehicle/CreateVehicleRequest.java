@@ -1,5 +1,6 @@
 package com.fleetflow.dto.vehicle;
 
+import com.fleetflow.enums.VehicleType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -12,6 +13,10 @@ public class CreateVehicleRequest {
 
     @NotBlank
     private String model;
+
+    private VehicleType type;
+
+    private String region;
 
     @NotBlank
     private String licensePlate;

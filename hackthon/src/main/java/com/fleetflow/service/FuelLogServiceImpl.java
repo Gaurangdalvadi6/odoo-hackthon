@@ -5,10 +5,12 @@ import com.fleetflow.dto.fuellog.FuelLogResponse;
 import com.fleetflow.entity.FuelLog;
 import com.fleetflow.entity.Vehicle;
 import com.fleetflow.enums.VehicleStatus;
+import com.fleetflow.exception.CustomException;
 import com.fleetflow.repository.FuelLogRepository;
 import com.fleetflow.repository.TripRepository;
 import com.fleetflow.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +30,11 @@ public class FuelLogServiceImpl implements FuelLogService {
     public FuelLogResponse create(CreateFuelLogRequest request) {
 
         Vehicle vehicle = vehicleRepository.findById(request.getVehicleId())
-                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+                .orElseThrow(() -> new CustomException("Vehicle not found", HttpStatus.NOT_FOUND));
 
         // 🚨 Business Rule 1: Retired vehicle cannot refuel
         if(vehicle.getStatus() == VehicleStatus.RETIRED){
-            throw new RuntimeException("Cannot add fuel to retired vehicle");
+            throw new CustomException("Cannot add fuel to retired vehicle",HttpStatus.NOT_ACCEPTABLE);
         }
 
         FuelLog fuelLog = new FuelLog();

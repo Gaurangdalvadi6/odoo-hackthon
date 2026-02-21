@@ -1,6 +1,7 @@
 package com.fleetflow.entity;
 
 import com.fleetflow.enums.VehicleStatus;
+import com.fleetflow.enums.VehicleType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,6 +23,11 @@ public class Vehicle {
 
     @Column(nullable = false)
     private String model;
+
+    @Enumerated(EnumType.STRING)
+    private VehicleType type;
+
+    private String region;
 
     @Column(nullable = false, unique = true)
     private String licensePlate;

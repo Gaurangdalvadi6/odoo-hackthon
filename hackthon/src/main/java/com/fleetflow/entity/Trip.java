@@ -27,6 +27,9 @@ public class Trip {
 
     private Double cargoWeight;
 
+    private String origin;
+    private String destination;
+
     private Double revenue;
 
     private LocalDateTime startTime;

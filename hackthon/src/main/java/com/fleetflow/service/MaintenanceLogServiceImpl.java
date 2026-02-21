@@ -6,9 +6,11 @@ import com.fleetflow.entity.MaintenanceLog;
 import com.fleetflow.entity.Vehicle;
 import com.fleetflow.enums.MaintenanceStatus;
 import com.fleetflow.enums.VehicleStatus;
+import com.fleetflow.exception.CustomException;
 import com.fleetflow.repository.MaintenanceLogRepository;
 import com.fleetflow.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,16 +29,16 @@ public class MaintenanceLogServiceImpl implements MaintenanceLogService {
     public MaintenanceResponse create(CreateMaintenanceRequest request) {
 
         Vehicle vehicle = vehicleRepository.findById(request.getVehicleId())
-                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+                .orElseThrow(() -> new CustomException("Vehicle not found", HttpStatus.NOT_FOUND));
 
         // 🚨 Rule 1: Retired vehicle cannot go to maintenance
         if (vehicle.getStatus() == VehicleStatus.RETIRED) {
-            throw new RuntimeException("Cannot maintain retired vehicle");
+            throw new CustomException("Cannot maintain retired vehicle",HttpStatus.NOT_ACCEPTABLE);
         }
 
         // 🚨 Rule 2: If already in shop, prevent duplicate open maintenance
         if (vehicle.getStatus() == VehicleStatus.IN_SHOP) {
-            throw new RuntimeException("Vehicle already in maintenance");
+            throw new CustomException("Vehicle already in maintenance",HttpStatus.NOT_ACCEPTABLE);
         }
 
         // Change vehicle status
@@ -63,10 +65,10 @@ public class MaintenanceLogServiceImpl implements MaintenanceLogService {
     public MaintenanceResponse complete(Long maintenanceId) {
 
         MaintenanceLog log = maintenanceRepository.findById(maintenanceId)
-                .orElseThrow(() -> new RuntimeException("Maintenance not found"));
+                .orElseThrow(() -> new CustomException("Maintenance not found",HttpStatus.NOT_FOUND));
 
         if (log.getStatus() == MaintenanceStatus.COMPLETED) {
-            throw new RuntimeException("Maintenance already completed");
+            throw new CustomException("Maintenance already completed",HttpStatus.BAD_REQUEST);
         }
 
         log.setStatus(MaintenanceStatus.COMPLETED);

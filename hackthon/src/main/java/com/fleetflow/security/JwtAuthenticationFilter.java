@@ -38,6 +38,11 @@ public class JwtAuthenticationFilter
         }
 
         String token = authHeader.substring(7);
+        if (blacklistService.isBlacklisted(token)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String username = jwtService.extractUsername(token);
 
         if(username != null &&
